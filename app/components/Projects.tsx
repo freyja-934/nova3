@@ -119,29 +119,30 @@ export default function Projects() {
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <Link href={`/projects/${project.id}`}>
-                  <div className="glass-effect rounded-xl overflow-hidden hover:bg-black/30 hover:border-white/20 border border-transparent transition-all relative group">
+                  <div className="relative rounded-xl overflow-hidden hover:border-white/20 border border-transparent transition-all group h-full">
+                    {/* Full card background image */}
+                    <Image
+                      src={`/assets/card-bg-${(index % 3) + 1}.png`}
+                      alt=""
+                      fill
+                      className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300 group-hover:scale-105"
+                    />
+                    
+                    {/* Dark overlay for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-nova-darker via-nova-darker/80 to-nova-darker/60 group-hover:from-nova-darker/90 group-hover:via-nova-darker/70 group-hover:to-nova-darker/50 transition-all duration-300" />
+                    
                     {/* Hover glow effect */}
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-nova-gradient-start/40 to-nova-gradient-end/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10"
+                      className="absolute inset-0 bg-gradient-to-br from-nova-gradient-start/20 to-nova-gradient-end/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
                       whileHover={{ scale: 1.1 }}
                     />
                     
-                    {/* Project Image Area with Custom Background */}
-                    <div className="h-48 relative overflow-hidden">
-                      {/* Custom background image for featured projects */}
-                      <Image
-                        src={`/assets/card-bg-${(index % 3) + 1}.png`}
-                        alt=""
-                        fill
-                        className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300 group-hover:scale-105"
-                      />
-                      {/* Gradient overlay for better text visibility */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-nova-darker/80 to-transparent" />
-                      
+                    {/* Content */}
+                    <div className="relative z-10 h-full flex flex-col justify-between p-6">
                       {/* Featured Badge */}
                       {project.featured && (
                         <motion.div 
-                          className="absolute top-4 right-4 z-10"
+                          className="self-end"
                           initial={{ scale: 0, rotate: -180 }}
                           animate={{ scale: 1, rotate: 0 }}
                           transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
@@ -151,41 +152,41 @@ export default function Projects() {
                           </span>
                         </motion.div>
                       )}
-                    </div>
 
-                    {/* Project Info */}
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold mb-2 group-hover:gradient-text transition-all">
-                        {project.name}
-                      </h3>
-                      <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                        {project.description}
-                      </p>
-                      
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2">
-                        {project.tags.slice(0, 3).map((tag, tagIndex) => (
-                          <motion.span
-                            key={tag}
-                            className="px-2 py-1 text-xs rounded-full bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300 transition-all cursor-default"
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.6 + index * 0.1 + tagIndex * 0.05 }}
-                            whileHover={{ scale: 1.1 }}
-                          >
-                            {tag}
-                          </motion.span>
-                        ))}
-                        {project.tags.length > 3 && (
-                          <motion.span 
-                            className="px-2 py-1 text-xs rounded-full bg-white/5 text-gray-400"
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.8 + index * 0.1 }}
-                          >
-                            +{project.tags.length - 3}
-                          </motion.span>
-                        )}
+                      {/* Project Info */}
+                      <div className="mt-auto">
+                        <h3 className="text-xl font-semibold mb-2 group-hover:gradient-text transition-all">
+                          {project.name}
+                        </h3>
+                        <p className="text-gray-300 text-sm mb-4 line-clamp-2">
+                          {project.description}
+                        </p>
+                        
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-2">
+                          {project.tags.slice(0, 3).map((tag, tagIndex) => (
+                            <motion.span
+                              key={tag}
+                              className="px-2 py-1 text-xs rounded-full bg-white/10 backdrop-blur-sm text-gray-200 hover:bg-white/20 hover:text-white transition-all cursor-default"
+                              initial={{ opacity: 0, scale: 0 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: 0.6 + index * 0.1 + tagIndex * 0.05 }}
+                              whileHover={{ scale: 1.1 }}
+                            >
+                              {tag}
+                            </motion.span>
+                          ))}
+                          {project.tags.length > 3 && (
+                            <motion.span 
+                              className="px-2 py-1 text-xs rounded-full bg-white/10 backdrop-blur-sm text-gray-200"
+                              initial={{ opacity: 0, scale: 0 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: 0.8 + index * 0.1 }}
+                            >
+                              +{project.tags.length - 3}
+                            </motion.span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
