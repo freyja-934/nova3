@@ -139,10 +139,11 @@ export default function Services() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                  className="w-full sm:w-auto"
                 >
                   <Tabs.Trigger
                     value={key}
-                    className={`relative px-6 py-3 rounded-lg font-medium transition-all overflow-hidden group ${
+                    className={`relative w-full sm:w-auto px-6 py-3 rounded-lg font-medium transition-all overflow-hidden group ${
                       activeTab === key
                         ? 'bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end text-white shadow-lg'
                         : 'glass-effect hover:bg-white/10'
