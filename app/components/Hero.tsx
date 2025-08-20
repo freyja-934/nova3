@@ -5,33 +5,9 @@ import { useEffect, useState } from 'react'
 
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
-
-    // Check if mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640)
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (window.innerWidth >= 640) { // Only apply parallax on desktop
-        const x = (e.clientX / window.innerWidth - 0.5) * 20
-        const y = (e.clientY / window.innerHeight - 0.5) * 20
-        setMousePosition({ x, y })
-      }
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('resize', checkMobile)
-    }
   }, [])
 
   const scrollToSection = (sectionId: string) => {
@@ -41,32 +17,25 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden noise-overlay">
-      {/* Video Background with Parallax (disabled on mobile) */}
-      <motion.div 
-        className="absolute inset-0 z-0"
-        style={isMobile ? {} : {
-          x: mousePosition.x,
-          y: mousePosition.y,
-        }}
-        transition={{ type: "spring", stiffness: 50, damping: 20 }}
-      >
+      {/* Video Background - Fixed, no animations */}
+      <div className="absolute inset-0 z-0">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute w-full h-full object-cover scale-100 sm:scale-110"
+          className="absolute w-full h-full object-cover"
         >
           <source src="/assets/hero-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Animated Gradient Overlay - Consistent across all devices */}
-        <div className="absolute inset-0 bg-gradient-to-b from-nova-darker/50 via-nova-darker/70 to-nova-darker animated-gradient" />
+        {/* Static Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-nova-darker/50 via-nova-darker/70 to-nova-darker" />
         
-        {/* Additional effects - Consistent across all devices */}
+        {/* Additional effects - Static */}
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-nova-darker/50" />
-      </motion.div>
+      </div>
 
       {/* Content - Full width on mobile */}
       <div className="relative z-10 h-full flex items-center justify-center px-0 sm:px-8 md:px-16 lg:px-24 pt-20 sm:pt-28 md:pt-32">
