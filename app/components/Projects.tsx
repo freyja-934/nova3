@@ -126,34 +126,22 @@ export default function Projects() {
                       whileHover={{ scale: 1.1 }}
                     />
                     
-                    {/* Project Image/Logo Area */}
-                    <div className="h-48 bg-gradient-to-br from-nova-gradient-start/20 to-nova-gradient-end/20 flex items-center justify-center relative overflow-hidden animated-gradient">
-                      {project.logo ? (
-                        <motion.div 
-                          className="relative w-32 h-32"
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ type: "spring", stiffness: 300 }}
-                        >
-                          <Image
-                            src={project.logo}
-                            alt={project.name}
-                            fill
-                            className="object-contain filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300"
-                          />
-                        </motion.div>
-                      ) : (
-                        <motion.h3 
-                          className="font-display font-bold text-2xl text-white/30 group-hover:text-white/60 transition-colors"
-                          whileHover={{ scale: 1.1 }}
-                        >
-                          {project.client}
-                        </motion.h3>
-                      )}
+                    {/* Project Image Area with Custom Background */}
+                    <div className="h-48 relative overflow-hidden">
+                      {/* Custom background image for featured projects */}
+                      <Image
+                        src={`/assets/card-bg-${(index % 3) + 1}.png`}
+                        alt=""
+                        fill
+                        className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300 group-hover:scale-105"
+                      />
+                      {/* Gradient overlay for better text visibility */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-nova-darker/80 to-transparent" />
                       
                       {/* Featured Badge */}
                       {project.featured && (
                         <motion.div 
-                          className="absolute top-4 right-4"
+                          className="absolute top-4 right-4 z-10"
                           initial={{ scale: 0, rotate: -180 }}
                           animate={{ scale: 1, rotate: 0 }}
                           transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
