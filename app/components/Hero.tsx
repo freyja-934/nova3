@@ -60,16 +60,16 @@ export default function Hero() {
           <source src="/assets/hero-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Animated Gradient Overlay - Lighter on mobile */}
-        <div className="absolute inset-0 bg-gradient-to-b from-nova-darker/20 via-nova-darker/40 to-nova-darker/60 sm:from-nova-darker/50 sm:via-nova-darker/70 sm:to-nova-darker animated-gradient" />
+        {/* Animated Gradient Overlay - Consistent across all devices */}
+        <div className="absolute inset-0 bg-gradient-to-b from-nova-darker/50 via-nova-darker/70 to-nova-darker animated-gradient" />
         
-        {/* Additional effects - Lighter on mobile */}
-        <div className="absolute inset-0 bg-black/10 sm:bg-black/30" />
-        <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-nova-darker/30 sm:to-nova-darker/50" />
+        {/* Additional effects - Consistent across all devices */}
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-nova-darker/50" />
       </motion.div>
 
       {/* Content - Full width on mobile */}
-      <div className="relative z-10 h-full flex items-center justify-center px-0 sm:px-8 md:px-16 lg:px-24 pt-32 sm:pt-28 md:pt-32">
+      <div className="relative z-10 h-full flex items-center justify-center px-0 sm:px-8 md:px-16 lg:px-24 pt-20 sm:pt-28 md:pt-32">
         <div className="text-center max-w-5xl mx-auto w-full">
           {/* Animated Headline */}
           <motion.div
