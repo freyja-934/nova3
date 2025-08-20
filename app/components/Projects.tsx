@@ -119,74 +119,77 @@ export default function Projects() {
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <Link href={`/projects/${project.id}`}>
-                  <div className="relative rounded-xl overflow-hidden hover:border-white/20 border border-transparent transition-all group h-full">
+                  <div className="relative rounded-xl overflow-hidden hover:border-white/20 border border-transparent transition-all group aspect-[7/6]">
                     {/* Full card background image */}
                     <Image
                       src={`/assets/card-bg-${(index % 3) + 1}.png`}
                       alt=""
                       fill
-                      className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300 group-hover:scale-105"
+                      className="object-cover transition-all duration-300 group-hover:scale-105"
                     />
                     
-                    {/* Dark overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-nova-darker via-nova-darker/80 to-nova-darker/60 group-hover:from-nova-darker/90 group-hover:via-nova-darker/70 group-hover:to-nova-darker/50 transition-all duration-300" />
+                    {/* Lighter overlay for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-nova-darker/90 via-nova-darker/40 to-transparent group-hover:from-nova-darker/80 group-hover:via-nova-darker/30 transition-all duration-300" />
                     
                     {/* Hover glow effect */}
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-nova-gradient-start/20 to-nova-gradient-end/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
+                      className="absolute inset-0 bg-gradient-to-br from-nova-gradient-start/10 to-nova-gradient-end/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                       whileHover={{ scale: 1.1 }}
                     />
                     
                     {/* Content */}
-                    <div className="relative z-10 h-full flex flex-col justify-between p-6">
-                      {/* Featured Badge */}
-                      {project.featured && (
-                        <motion.div 
-                          className="self-end"
-                          initial={{ scale: 0, rotate: -180 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
-                        >
-                          <span className="px-3 py-1 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end rounded-full text-xs font-semibold shadow-lg glow-pulse">
-                            Featured
-                          </span>
-                        </motion.div>
-                      )}
-
-                      {/* Project Info */}
-                      <div className="mt-auto">
-                        <h3 className="text-xl font-semibold mb-2 group-hover:gradient-text transition-all">
-                          {project.name}
-                        </h3>
-                        <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-                          {project.description}
-                        </p>
-                        
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-2">
-                          {project.tags.slice(0, 3).map((tag, tagIndex) => (
-                            <motion.span
-                              key={tag}
-                              className="px-2 py-1 text-xs rounded-full bg-white/10 backdrop-blur-sm text-gray-200 hover:bg-white/20 hover:text-white transition-all cursor-default"
-                              initial={{ opacity: 0, scale: 0 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: 0.6 + index * 0.1 + tagIndex * 0.05 }}
-                              whileHover={{ scale: 1.1 }}
-                            >
-                              {tag}
-                            </motion.span>
-                          ))}
-                          {project.tags.length > 3 && (
-                            <motion.span 
-                              className="px-2 py-1 text-xs rounded-full bg-white/10 backdrop-blur-sm text-gray-200"
-                              initial={{ opacity: 0, scale: 0 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: 0.8 + index * 0.1 }}
-                            >
-                              +{project.tags.length - 3}
-                            </motion.span>
-                          )}
+                    <div className="absolute inset-0 z-10 flex flex-col p-6">
+                      {/* Top section with title and badge */}
+                      <div className="flex justify-between items-start mb-3">
+                        {/* Project Info */}
+                        <div className="flex-1">
+                          <h3 className="text-xl font-semibold mb-2 text-white drop-shadow-lg group-hover:gradient-text transition-all">
+                            {project.name}
+                          </h3>
+                          <p className="text-gray-200 text-sm mb-4 line-clamp-2 drop-shadow">
+                            {project.description}
+                          </p>
                         </div>
+                        
+                        {/* Featured Badge */}
+                        {project.featured && (
+                          <motion.div 
+                            className="ml-4 flex-shrink-0"
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                          >
+                            <span className="px-3 py-1 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end rounded-full text-xs font-semibold shadow-lg glow-pulse">
+                              Featured
+                            </span>
+                          </motion.div>
+                        )}
+                      </div>
+                      
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2">
+                        {project.tags.slice(0, 3).map((tag, tagIndex) => (
+                          <motion.span
+                            key={tag}
+                            className="px-2 py-1 text-xs rounded-full bg-black/30 backdrop-blur-md text-white hover:bg-black/50 transition-all cursor-default"
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.6 + index * 0.1 + tagIndex * 0.05 }}
+                            whileHover={{ scale: 1.1 }}
+                          >
+                            {tag}
+                          </motion.span>
+                        ))}
+                        {project.tags.length > 3 && (
+                          <motion.span 
+                            className="px-2 py-1 text-xs rounded-full bg-black/30 backdrop-blur-md text-white"
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.8 + index * 0.1 }}
+                          >
+                            +{project.tags.length - 3}
+                          </motion.span>
+                        )}
                       </div>
                     </div>
                   </div>
