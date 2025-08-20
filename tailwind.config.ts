@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'nova-gradient-start': '#9945FF',
-        'nova-gradient-end': '#14F195',
+        'nova-gradient-start': '#5B21B6',  // Deep dark purple
+        'nova-gradient-end': '#047857',    // Deep dark emerald
         'nova-dark': '#0a0a0a',
         'nova-darker': '#050505',
       },

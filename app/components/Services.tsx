@@ -79,10 +79,27 @@ export default function Services() {
   const [activeTab, setActiveTab] = useState('infrastructure')
 
   return (
-    <section id="services" className="py-24 relative">
+    <section id="services" className="py-16 sm:py-20 md:py-24 relative">
       {/* Background Pattern */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-nova-dark/50 to-transparent" />
+        {/* Animated gradient orbs */}
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-nova-gradient-start/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-nova-gradient-end/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.5, 0.3, 0.5],
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
       </div>
 
       <div className="section-padding" ref={ref}>
@@ -93,12 +110,12 @@ export default function Services() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-5xl font-display font-bold mb-4"
+              className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4"
             >
               What We <span className="gradient-text">Build</span>
             </motion.h2>
@@ -106,7 +123,7 @@ export default function Services() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl text-gray-400 max-w-2xl mx-auto"
+              className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl mx-auto px-4 sm:px-0"
             >
               End-to-end Web3 solutions tailored to your project&apos;s unique needs
             </motion.p>
@@ -125,14 +142,25 @@ export default function Services() {
                 >
                   <Tabs.Trigger
                     value={key}
-                    className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                    className={`relative px-6 py-3 rounded-lg font-medium transition-all overflow-hidden group ${
                       activeTab === key
                         ? 'bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end text-white shadow-lg'
                         : 'glass-effect hover:bg-white/10'
                     }`}
                   >
-                    <span className="text-2xl mr-2">{service.icon}</span>
-                    {service.title}
+                    <motion.span 
+                      className="relative z-10 flex items-center justify-center"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <span className="text-2xl mr-2">{service.icon}</span>
+                      {service.title}
+                    </motion.span>
+                    {activeTab !== key && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-nova-gradient-start/20 to-nova-gradient-end/20 opacity-0 group-hover:opacity-100 transition-opacity"
+                      />
+                    )}
                   </Tabs.Trigger>
                 </motion.div>
               ))}
@@ -153,15 +181,28 @@ export default function Services() {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02 }}
-                      className="glass-effect p-6 rounded-xl hover:bg-white/5 transition-all group"
+                      whileHover={{ 
+                        scale: 1.02,
+                        boxShadow: "0 0 30px rgba(153, 69, 255, 0.2)"
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      className="glass-effect p-6 rounded-xl hover:bg-white/5 transition-all group cursor-pointer relative overflow-hidden"
                     >
-                      <h3 className="text-xl font-semibold mb-2 group-hover:gradient-text transition-all">
-                        {item.name}
-                      </h3>
-                      <p className="text-gray-400">
-                        {item.description}
-                      </p>
+                      <div className="relative z-10">
+                        <h3 className="text-xl font-semibold mb-2 group-hover:gradient-text transition-all">
+                          {item.name}
+                        </h3>
+                        <p className="text-gray-400 group-hover:text-gray-300 transition-colors">
+                          {item.description}
+                        </p>
+                      </div>
+                      <motion.div
+                        className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end"
+                        initial={{ scaleX: 0 }}
+                        whileHover={{ scaleX: 1 }}
+                        transition={{ duration: 0.3 }}
+                        style={{ originX: 0 }}
+                      />
                     </motion.div>
                   ))}
                 </motion.div>
@@ -180,12 +221,18 @@ export default function Services() {
               Don&apos;t see what you need? We love custom challenges.
             </p>
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0 0 40px rgba(153, 69, 255, 0.5)"
+              }}
               whileTap={{ scale: 0.95 }}
               onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-shadow"
+              className="relative px-8 py-4 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all overflow-hidden group animated-gradient"
             >
-              Let&apos;s Build Together
+              <span className="relative z-10">Let&apos;s Build Together</span>
+              <motion.div
+                className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"
+              />
             </motion.button>
           </motion.div>
         </motion.div>

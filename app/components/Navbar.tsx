@@ -6,11 +6,12 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 const navLinks = [
-  { href: '#about', label: 'About' },
-  { href: '#services', label: 'Services' },
-  { href: '#clients', label: 'Clients' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#about', label: 'About' },
+  { href: '/#services', label: 'Services' },
+  { href: '/#clients', label: 'Clients' },
+  { href: '/#projects', label: 'Projects' },
+  { href: '/case-studies', label: 'Case Studies' },
+  { href: '/#contact', label: 'Contact' },
 ]
 
 export default function Navbar() {
@@ -27,10 +28,13 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'glass-effect py-4' : 'bg-transparent py-6'
+    <motion.nav
+      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 glass-effect backdrop-blur-xl ${
+        isScrolled ? 'py-3 sm:py-4 bg-nova-darker/80 shadow-lg' : 'py-4 sm:py-6 bg-nova-darker/60'
       }`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, type: "spring" }}
     >
       <div className="section-padding">
         <div className="flex items-center justify-between">
@@ -46,9 +50,9 @@ export default function Navbar() {
                 alt="Nova 3"
                 width={40}
                 height={40}
-                className="w-10 h-10"
+                className="w-8 h-8 sm:w-10 sm:h-10"
               />
-              <span className="font-display font-bold text-xl gradient-text">
+              <span className="font-display font-bold text-lg sm:text-xl gradient-text">
                 NOVA 3
               </span>
             </motion.div>
@@ -65,12 +69,15 @@ export default function Navbar() {
                 <span className="relative z-10 font-medium transition-colors group-hover:text-white">
                   {link.label}
                 </span>
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
+                              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end origin-left"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+                transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
+              />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-nova-gradient-start/10 to-nova-gradient-end/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity -z-10"
+              />
               </Link>
             ))}
           </div>
@@ -81,26 +88,30 @@ export default function Navbar() {
             className="md:hidden relative z-10 p-2"
             aria-label="Toggle menu"
           >
-            <div className="w-6 h-5 flex flex-col justify-between">
+            <div className="w-6 h-5 flex flex-col justify-between relative">
               <motion.span
                 animate={{
                   rotate: isMobileMenuOpen ? 45 : 0,
                   y: isMobileMenuOpen ? 8 : 0,
                 }}
-                className="w-full h-0.5 bg-white origin-left transition-all"
+                transition={{ type: "spring", stiffness: 300 }}
+                className="w-full h-0.5 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end origin-left"
               />
               <motion.span
                 animate={{
                   opacity: isMobileMenuOpen ? 0 : 1,
+                  scaleX: isMobileMenuOpen ? 0 : 1,
                 }}
-                className="w-full h-0.5 bg-white transition-all"
+                transition={{ type: "spring", stiffness: 300 }}
+                className="w-full h-0.5 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end"
               />
               <motion.span
                 animate={{
                   rotate: isMobileMenuOpen ? -45 : 0,
                   y: isMobileMenuOpen ? -8 : 0,
                 }}
-                className="w-full h-0.5 bg-white origin-left transition-all"
+                transition={{ type: "spring", stiffness: 300 }}
+                className="w-full h-0.5 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end origin-left"
               />
             </div>
           </button>
@@ -110,13 +121,18 @@ export default function Navbar() {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, height: 0, scale: 0.95 }}
+              animate={{ opacity: 1, height: 'auto', scale: 1 }}
+              exit={{ opacity: 0, height: 0, scale: 0.95 }}
+              transition={{ duration: 0.3, type: "spring" }}
               className="md:hidden mt-4 overflow-hidden"
             >
-              <div className="glass-effect rounded-lg p-4 space-y-2">
+              <motion.div 
+                className="glass-effect rounded-lg p-4 space-y-2 backdrop-blur-xl"
+                initial={{ y: -20 }}
+                animate={{ y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
                 {navLinks.map((link, index) => (
                   <motion.div
                     key={link.href}
@@ -127,17 +143,23 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="block py-2 px-4 rounded-lg hover:bg-white/10 transition-all relative overflow-hidden group"
                     >
-                      {link.label}
+                      <span className="relative z-10">{link.label}</span>
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-nova-gradient-start/20 to-nova-gradient-end/20"
+                        initial={{ x: "-100%" }}
+                        whileHover={{ x: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
                     </Link>
                   </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-    </nav>
+    </motion.nav>
   )
 }

@@ -9,10 +9,11 @@ const footerLinks = {
     { label: 'Token Launch', href: '#' },
   ],
   company: [
-    { label: 'About', href: '#about' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Clients', href: '#clients' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'About', href: '/#about' },
+    { label: 'Projects', href: '/#projects' },
+    { label: 'Case Studies', href: '/case-studies' },
+    { label: 'Clients', href: '/#clients' },
+    { label: 'Contact', href: '/#contact' },
   ],
   resources: [
     { label: 'Blog', href: '#' },

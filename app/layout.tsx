@@ -40,8 +40,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.className} bg-nova-darker text-white antialiased`}>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
+        <Navbar />
+        {/* Main content */}
+        <div className="flex flex-col min-h-screen noise-overlay">
           <main className="flex-grow">
             {children}
           </main>

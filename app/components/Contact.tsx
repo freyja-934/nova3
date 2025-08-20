@@ -21,9 +21,14 @@ export default function Contact() {
     e.preventDefault()
     setIsSubmitting(true)
     
+    // Add form field animation
+    const form = e.currentTarget as HTMLFormElement
+    form.classList.add('shimmer')
+    
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000))
     
+    form.classList.remove('shimmer')
     setIsSubmitting(false)
     setSubmitStatus('success')
     setFormState({
@@ -47,10 +52,25 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-24 relative">
+    <section id="contact" className="py-16 sm:py-20 md:py-24 relative">
       {/* Background gradient */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-96 bg-gradient-to-t from-nova-gradient-start/10 to-transparent blur-3xl" />
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <motion.div 
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-96 bg-gradient-to-t from-nova-gradient-start/10 to-transparent blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.2, 0.1],
+          }}
+          transition={{ duration: 10, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute top-1/4 right-0 w-96 h-96 bg-nova-gradient-end/10 rounded-full blur-3xl"
+          animate={{
+            x: [0, 50, 0],
+            y: [0, -30, 0],
+          }}
+          transition={{ duration: 15, repeat: Infinity }}
+        />
       </div>
 
       <div className="section-padding" ref={ref}>
@@ -61,12 +81,12 @@ export default function Contact() {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-5xl font-display font-bold mb-4"
+              className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4"
             >
               Let&apos;s Build <span className="gradient-text">Together</span>
             </motion.h2>
@@ -74,7 +94,7 @@ export default function Contact() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl text-gray-400 max-w-2xl mx-auto"
+              className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl mx-auto px-4 sm:px-0"
             >
               Ready to bring your Web3 vision to life? Let&apos;s discuss your project.
             </motion.p>
@@ -93,30 +113,38 @@ export default function Contact() {
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
                       Your Name *
                     </label>
-                    <input
+                    <motion.input
                       type="text"
                       id="name"
                       name="name"
                       required
                       value={formState.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 glass-effect rounded-lg focus:outline-none focus:ring-2 focus:ring-nova-gradient-start"
+                      className="w-full px-4 py-3 glass-effect rounded-lg focus:outline-none focus:ring-2 focus:ring-nova-gradient-start transition-all"
                       placeholder="John Doe"
+                      whileFocus={{ scale: 1.02 }}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 }}
                     />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2">
                       Email Address *
                     </label>
-                    <input
+                    <motion.input
                       type="email"
                       id="email"
                       name="email"
                       required
                       value={formState.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 glass-effect rounded-lg focus:outline-none focus:ring-2 focus:ring-nova-gradient-start"
+                      className="w-full px-4 py-3 glass-effect rounded-lg focus:outline-none focus:ring-2 focus:ring-nova-gradient-start transition-all"
                       placeholder="john@example.com"
+                      whileFocus={{ scale: 1.02 }}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.4 }}
                     />
                   </div>
                 </div>
@@ -195,25 +223,73 @@ export default function Contact() {
                 <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ 
+                    scale: 1.02,
+                    boxShadow: "0 0 40px rgba(153, 69, 255, 0.5)"
+                  }}
                   whileTap={{ scale: 0.98 }}
-                  className={`w-full py-4 rounded-lg font-semibold text-white transition-all ${
+                  className={`relative w-full py-4 rounded-lg font-semibold text-white transition-all overflow-hidden group ${
                     isSubmitting
                       ? 'bg-gray-600 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end hover:shadow-lg'
+                      : 'bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end hover:shadow-lg animated-gradient'
                   }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  <span className="relative z-10">
+                    {isSubmitting ? (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex items-center justify-center gap-2"
+                      >
+                        <motion.div
+                          className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                        Sending...
+                      </motion.span>
+                    ) : (
+                      'Send Message'
+                    )}
+                  </span>
+                  {!isSubmitting && (
+                    <motion.div
+                      className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"
+                    />
+                  )}
                 </motion.button>
 
                 {/* Status Messages */}
                 {submitStatus === 'success' && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400"
+                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ type: "spring", stiffness: 200 }}
+                    className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 relative overflow-hidden"
                   >
-                    Thank you! We&apos;ll get back to you within 24 hours.
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-transparent"
+                      initial={{ x: "-100%" }}
+                      animate={{ x: "100%" }}
+                      transition={{ duration: 1.5 }}
+                    />
+                    <span className="relative z-10 flex items-center gap-2">
+                      <motion.svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2, type: "spring" }}
+                      >
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </motion.svg>
+                      Thank you! We&apos;ll get back to you within 24 hours.
+                    </span>
                   </motion.div>
                 )}
 
@@ -240,19 +316,26 @@ export default function Contact() {
               <div className="glass-effect p-8 rounded-xl">
                 <h3 className="text-2xl font-display font-semibold mb-6">Quick Contact</h3>
                 <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end flex items-center justify-center flex-shrink-0">
+                  <motion.div 
+                    className="flex items-start gap-4 group cursor-pointer"
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <motion.div 
+                      className="w-10 h-10 rounded-lg bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end flex items-center justify-center flex-shrink-0 shadow-lg"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                    >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                    </div>
+                    </motion.div>
                     <div>
                       <p className="text-sm text-gray-400">Email</p>
-                      <a href="mailto:hello@nova3.dev" className="hover:gradient-text transition-all">
+                      <a href="mailto:hello@nova3.dev" className="hover:gradient-text transition-all group-hover:translate-x-1">
                         hello@nova3.dev
                       </a>
                     </div>
-                  </div>
+                  </motion.div>
 
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end flex items-center justify-center flex-shrink-0">
