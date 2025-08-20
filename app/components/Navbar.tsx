@@ -29,14 +29,25 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 glass-effect backdrop-blur-xl ${
-        isScrolled ? 'py-3 sm:py-4 bg-nova-darker/80 shadow-lg' : 'py-4 sm:py-6 bg-nova-darker/60'
+      className={`fixed top-0 left-0 right-0 w-full z-[9999] transition-all duration-300 ${
+        isScrolled ? 'py-3 sm:py-4 shadow-lg' : 'py-4 sm:py-6'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, type: "spring" }}
     >
-      <div className="section-padding">
+      {/* Blur background layer */}
+      <div className={`absolute inset-0 backdrop-blur-2xl transition-all duration-300 overflow-hidden ${
+        isScrolled 
+          ? 'bg-gradient-to-b from-black/20 via-black/10 to-transparent border-b border-white/10' 
+          : 'bg-gradient-to-b from-black/10 to-transparent'
+      }`} />
+      
+      {/* Noise overlay for texture */}
+      <div className="absolute inset-0 noise-overlay opacity-10 overflow-hidden" />
+      
+      {/* Content container */}
+      <div className="relative section-padding">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="relative z-10">
@@ -128,7 +139,7 @@ export default function Navbar() {
               className="md:hidden mt-4 overflow-hidden"
             >
               <motion.div 
-                className="glass-effect rounded-lg p-4 space-y-2 backdrop-blur-xl"
+                className="rounded-xl p-4 space-y-2 backdrop-blur-2xl bg-black/10 border border-white/10 shadow-2xl"
                 initial={{ y: -20 }}
                 animate={{ y: 0 }}
                 transition={{ delay: 0.1 }}

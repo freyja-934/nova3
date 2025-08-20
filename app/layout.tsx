@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: 'Nova 3 - Web3 Development Studio',
   description: 'Premium Web3 infrastructure and experiences for creators, founders, and platforms. Founded by Casey Charlesworth.',
   keywords: 'Web3, Solana, Ethereum, NFT, DApp, Blockchain Development',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   openGraph: {
     title: 'Nova 3 - Web3 Development Studio',
     description: 'Premium Web3 infrastructure and experiences',
@@ -41,9 +42,10 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.className} bg-nova-darker text-white antialiased`}>
         <Navbar />
-        {/* Main content */}
-        <div className="flex flex-col min-h-screen noise-overlay">
-          <main className="flex-grow">
+        {/* Main content - removed noise-overlay from container to avoid transform issues */}
+        <div className="flex flex-col min-h-screen overflow-x-hidden">
+          <main className="flex-grow relative overflow-x-hidden">
+            <div className="noise-overlay" />
             {children}
           </main>
           <Footer />

@@ -10,13 +10,16 @@
     /* Optimize for smooth animations */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-nova-darker text-white font-sans antialiased;
-    /* GPU acceleration for transforms */
-    transform: translateZ(0);
-    will-change: scroll-position;
+    /* Remove transform that can interfere with fixed positioning */
+    /* GPU acceleration moved to specific elements that need it */
+    overflow-x: hidden;
+    position: relative;
+    max-width: 100vw;
   }
 
   /* Reduce motion for accessibility */

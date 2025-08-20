@@ -6,18 +6,32 @@ import { useEffect, useState } from 'react'
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
 
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20
-      const y = (e.clientY / window.innerHeight - 0.5) * 20
-      setMousePosition({ x, y })
+      if (window.innerWidth >= 640) { // Only apply parallax on desktop
+        const x = (e.clientX / window.innerWidth - 0.5) * 20
+        const y = (e.clientY / window.innerHeight - 0.5) * 20
+        setMousePosition({ x, y })
+      }
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('resize', checkMobile)
+    }
   }, [])
 
   const scrollToSection = (sectionId: string) => {
@@ -27,10 +41,10 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden noise-overlay">
-      {/* Video Background with Parallax */}
+      {/* Video Background with Parallax (disabled on mobile) */}
       <motion.div 
         className="absolute inset-0 z-0"
-        style={{
+        style={isMobile ? {} : {
           x: mousePosition.x,
           y: mousePosition.y,
         }}
@@ -41,29 +55,29 @@ export default function Hero() {
           loop
           muted
           playsInline
-          className="absolute w-full h-full object-cover scale-110"
+          className="absolute w-full h-full object-cover scale-100 sm:scale-110"
         >
           <source src="/assets/hero-video.mp4" type="video/mp4" />
         </video>
         
-        {/* Animated Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-nova-darker/50 via-nova-darker/70 to-nova-darker animated-gradient" />
+        {/* Animated Gradient Overlay - Lighter on mobile */}
+        <div className="absolute inset-0 bg-gradient-to-b from-nova-darker/20 via-nova-darker/40 to-nova-darker/60 sm:from-nova-darker/50 sm:via-nova-darker/70 sm:to-nova-darker animated-gradient" />
         
-        {/* Additional effects */}
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-nova-darker/50" />
+        {/* Additional effects - Lighter on mobile */}
+        <div className="absolute inset-0 bg-black/10 sm:bg-black/30" />
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-nova-darker/30 sm:to-nova-darker/50" />
       </motion.div>
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex items-center justify-center section-padding pt-32 sm:pt-28 md:pt-32">
-        <div className="text-center max-w-5xl mx-auto">
+      {/* Content - Full width on mobile */}
+      <div className="relative z-10 h-full flex items-center justify-center px-0 sm:px-8 md:px-16 lg:px-24 pt-32 sm:pt-28 md:pt-32">
+        <div className="text-center max-w-5xl mx-auto w-full">
           {/* Animated Headline */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.21, 1.11, 0.81, 0.99] }}
           >
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-4 sm:mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-4 sm:mb-6 px-2 sm:px-0">
               <motion.span 
                 className="block"
                 initial={{ opacity: 0, x: -20 }}
@@ -99,7 +113,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4 sm:px-0"
           >
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(153, 69, 255, 0.5)" }}
@@ -166,7 +180,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
         transition={{ duration: 0.8, delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
