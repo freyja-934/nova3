@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import '../styles/globals.css'
 import Footer from './components/Footer'
@@ -6,16 +6,25 @@ import Navbar from './components/Navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const title = 'Nova 3 - Software Development Consulting'
+const description =
+  'Software development consulting: custom web applications, APIs, automation, and technical guidance for startups and small businesses.'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export const metadata: Metadata = {
-  title: 'Nova 3 - Web3 Development Studio',
-  description: 'Premium Web3 infrastructure and experiences for creators, founders, and platforms. Founded by Casey Charlesworth.',
-  keywords: 'Web3, Solana, Ethereum, NFT, DApp, Blockchain Development',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+  metadataBase: new URL('https://nova3.org'),
+  title,
+  description,
+  keywords: 'software development, web applications, API development, automation, technical consulting',
   openGraph: {
-    title: 'Nova 3 - Web3 Development Studio',
-    description: 'Premium Web3 infrastructure and experiences',
+    title,
+    description,
     type: 'website',
-    url: 'https://nova3.dev',
+    url: 'https://nova3.org',
     images: [
       {
         url: '/assets/logo.png',
@@ -27,8 +36,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Nova 3 - Web3 Development Studio',
-    description: 'Premium Web3 infrastructure and experiences',
+    title,
+    description,
     images: ['/assets/logo.png'],
   },
 }
