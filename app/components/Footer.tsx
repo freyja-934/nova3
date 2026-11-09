@@ -21,6 +21,11 @@ const footerLinks = {
     { label: 'GitHub', href: 'https://github.com' },
     { label: 'Medium', href: 'https://medium.com/@freyja__3991' },
   ],
+  legal: [
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms', href: '/terms' },
+    { label: 'SMS Alerts', href: '/sms-alerts' },
+  ],
 }
 
 export default function Footer() {
@@ -109,9 +114,16 @@ export default function Footer() {
           {/* Bottom Section */}
           <div className="pt-8 border-t border-gray-800">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <p className="text-gray-400 text-sm">
-                © 2024 Nova 3. All rights reserved.
-              </p>
+              <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 text-sm text-gray-400">
+                <p>© 2024 Nova 3. All rights reserved.</p>
+                <nav className="flex gap-4" aria-label="Legal">
+                  {footerLinks.legal.map((link) => (
+                    <Link key={link.label} href={link.href} className="hover:text-white transition-colors">
+                      {link.label}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
               <div className="flex space-x-6">
                 <Link
                   href="#"
