@@ -5,6 +5,6 @@ export const sms = {
   brand: 'Nova 3',
   programName: 'Nova 3 Alerts',
   siteUrl: 'https://nova3.org',
-  supportEmail: 'hello@nova3.dev',
+  supportEmail: 'hello@nova3.org',
   lastUpdated: 'November 8, 2026',
 }
