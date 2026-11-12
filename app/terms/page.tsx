@@ -35,12 +35,13 @@ export default function TermsPage() {
               messages.
             </>,
             <>
-              <strong className="text-white">How to opt in:</strong> enter your mobile number and check the consent box
-              on our{' '}
+              <strong className="text-white">How to opt in:</strong> on our{' '}
               <Link href="/sms-alerts" className={legalLink}>
-                SMS Alerts sign-up page
+                Stay in Touch page
               </Link>
-              . Consent is not a condition of any purchase.
+              , enter your mobile number and check the separate, optional text message box. Text messages are entirely
+              optional: you can leave the box unchecked and still submit the form, contact us, and use all of our
+              services. Consent is not a condition of any purchase.
             </>,
             <>
               <strong className="text-white">Message frequency:</strong> varies based on activity.
@@ -52,7 +53,7 @@ export default function TermsPage() {
             <>
               <strong className="text-white">Opt out:</strong> reply <strong className="text-white">STOP</strong> to any
               message at any time. You&apos;ll get one final message confirming you&apos;ve been unsubscribed, and then
-              no more texts. To rejoin, sign up again on the SMS Alerts page.
+              no more texts. To rejoin, check the text message box again on the Stay in Touch page.
             </>,
             <>
               <strong className="text-white">Help:</strong> reply <strong className="text-white">HELP</strong> to any

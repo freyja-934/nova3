@@ -4,170 +4,116 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-
-const navLinks = [
-  { href: '/#services', label: 'Services' },
-  { href: '/#process', label: 'Process' },
-  { href: '/#contact', label: 'Contact' },
-]
+import { navLinks } from '../data/site'
+import { ArrowRight } from './ui/Icons'
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
+    const onScroll = () => setScrolled(window.scrollY > 12)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
   }, [])
 
   return (
-    <motion.nav
-      className={`fixed top-0 left-0 right-0 w-full z-[9999] transition-all duration-300 ${
-        isScrolled ? 'py-3 sm:py-4 shadow-lg' : 'py-4 sm:py-6'
-      }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, type: "spring" }}
-    >
-      {/* Blur background layer */}
-      <div className={`absolute inset-0 backdrop-blur-2xl transition-all duration-300 overflow-hidden ${
-        isScrolled 
-          ? 'bg-gradient-to-b from-black/20 via-black/10 to-transparent border-b border-white/10' 
-          : 'bg-gradient-to-b from-black/10 to-transparent'
-      }`} />
-      
-      {/* Noise overlay for texture */}
-      <div className="absolute inset-0 noise-overlay opacity-10 overflow-hidden" />
-      
-      {/* Content container */}
-      <div className="relative section-padding">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="relative z-10">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center space-x-2"
-            >
-              <Image
-                src="/assets/logo.png"
-                alt="Nova 3"
-                width={40}
-                height={40}
-                className="w-8 h-8 sm:w-10 sm:h-10"
-              />
-              <span className="font-display font-bold text-lg sm:text-xl gradient-text">
-                NOVA 3
-              </span>
-            </motion.div>
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
+      <motion.div
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className={`mx-auto max-w-site rounded-full border px-3 py-2 backdrop-blur-xl transition-colors duration-300 sm:px-4 ${
+          scrolled || open ? 'border-white/[0.12] bg-ink/85' : 'border-white/[0.07] bg-white/[0.03]'
+        }`}
+      >
+        <div className="flex items-center justify-between gap-4">
+          <Link href="/" className="flex items-center gap-2.5 pl-1" aria-label="Nova 3 home" onClick={() => setOpen(false)}>
+            <Image src="/assets/logo.png" alt="" width={32} height={32} className="h-8 w-8" priority />
+            <span className="text-[17px] font-semibold tracking-[-0.02em]">
+              Nova<span className="text-violet-400"> 3</span>
+            </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+            {navLinks.map((l) => (
               <Link
-                key={link.href}
-                href={link.href}
-                className="relative group py-2"
+                key={l.href}
+                href={l.href}
+                className="rounded-full px-4 py-2 text-sm text-fg-2 transition-colors hover:bg-white/[0.07] hover:text-fg"
               >
-                <span className="relative z-10 font-medium transition-colors group-hover:text-white">
-                  {link.label}
-                </span>
-                              <motion.div
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end origin-left"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
-              />
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-nova-gradient-start/10 to-nova-gradient-end/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity -z-10"
-              />
+                {l.label}
               </Link>
             ))}
-          </div>
+          </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative z-10 p-2"
-            aria-label="Toggle menu"
-          >
-            <div className="w-6 h-5 flex flex-col justify-between relative">
-              <motion.span
-                animate={{
-                  rotate: isMobileMenuOpen ? 45 : 0,
-                  y: isMobileMenuOpen ? 8 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="w-full h-0.5 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end origin-left"
-              />
-              <motion.span
-                animate={{
-                  opacity: isMobileMenuOpen ? 0 : 1,
-                  scaleX: isMobileMenuOpen ? 0 : 1,
-                }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="w-full h-0.5 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end"
-              />
-              <motion.span
-                animate={{
-                  rotate: isMobileMenuOpen ? -45 : 0,
-                  y: isMobileMenuOpen ? -8 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="w-full h-0.5 bg-gradient-to-r from-nova-gradient-start to-nova-gradient-end origin-left"
-              />
-            </div>
-          </button>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/#contact"
+              className="hidden items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-violet-300 sm:inline-flex"
+            >
+              Get in touch <ArrowRight className="h-4 w-4" />
+            </Link>
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.04] md:hidden"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+            >
+              <span className="relative block h-3 w-4">
+                <span
+                  className={`absolute left-0 h-px w-4 bg-fg transition-all duration-300 ${open ? 'top-1.5 rotate-45' : 'top-0'}`}
+                />
+                <span
+                  className={`absolute left-0 h-px w-4 bg-fg transition-all duration-300 ${open ? 'top-1.5 -rotate-45' : 'top-3'}`}
+                />
+              </span>
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
-          {isMobileMenuOpen && (
+          {open && (
             <motion.div
-              initial={{ opacity: 0, height: 0, scale: 0.95 }}
-              animate={{ opacity: 1, height: 'auto', scale: 1 }}
-              exit={{ opacity: 0, height: 0, scale: 0.95 }}
-              transition={{ duration: 0.3, type: "spring" }}
-              className="md:hidden mt-4 overflow-hidden"
+              id="mobile-menu"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="overflow-hidden md:hidden"
             >
-              <motion.div 
-                className="rounded-xl p-4 space-y-2 backdrop-blur-2xl bg-black/10 border border-white/10 shadow-2xl"
-                initial={{ y: -20 }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                {navLinks.map((link, index) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1 }}
+              <nav className="flex flex-col gap-1 px-1 pb-3 pt-4" aria-label="Mobile">
+                {navLinks.map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    className="rounded-2xl px-4 py-3 text-lg text-fg-2 hover:bg-white/[0.06] hover:text-fg"
                   >
-                    <Link
-                      href={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block py-2 px-4 rounded-lg hover:bg-white/10 transition-all relative overflow-hidden group"
-                    >
-                      <span className="relative z-10">{link.label}</span>
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-nova-gradient-start/20 to-nova-gradient-end/20"
-                        initial={{ x: "-100%" }}
-                        whileHover={{ x: 0 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    </Link>
-                  </motion.div>
+                    {l.label}
+                  </Link>
                 ))}
-              </motion.div>
+                <Link
+                  href="/#contact"
+                  onClick={() => setOpen(false)}
+                  className="btn-primary mt-2"
+                >
+                  Get in touch <ArrowRight className="h-4 w-4" />
+                </Link>
+              </nav>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </motion.nav>
+      </motion.div>
+    </header>
   )
 }

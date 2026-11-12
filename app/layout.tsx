@@ -1,64 +1,76 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { GeistMono } from 'geist/font/mono'
+import { GeistSans } from 'geist/font/sans'
 import '../styles/globals.css'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
+import { sms } from './data/sms'
 
-const inter = Inter({ subsets: ['latin'] })
-
-const title = 'Nova 3 - Software Development Consulting'
+const title = 'Nova 3 | Software Development Consulting'
 const description =
-  'Software development consulting: custom web applications, APIs, automation, and technical guidance for startups and small businesses.'
+  'Nova 3 is a software development consulting firm. We design, build, and scale web applications, APIs, and AI-powered products for startups and growing businesses.'
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#05040a',
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://nova3.org'),
+  metadataBase: new URL(sms.siteUrl),
   title,
   description,
-  keywords: 'software development, web applications, API development, automation, technical consulting',
+  keywords: [
+    'software development consulting',
+    'custom software development',
+    'web application development',
+    'API development',
+    'AI integration',
+    'workflow automation',
+    'technical advisory',
+  ],
   openGraph: {
     title,
     description,
     type: 'website',
-    url: 'https://nova3.org',
-    images: [
-      {
-        url: '/assets/logo.png',
-        width: 1200,
-        height: 630,
-        alt: 'Nova 3 Logo',
-      },
-    ],
+    url: sms.siteUrl,
+    siteName: 'Nova 3',
+    images: [{ url: '/assets/logo.png', width: 1024, height: 1024, alt: 'Nova 3' }],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title,
     description,
     images: ['/assets/logo.png'],
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Nova 3',
+  url: sms.siteUrl,
+  logo: `${sms.siteUrl}/assets/logo.png`,
+  email: sms.supportEmail,
+  description,
+  serviceType: [
+    'Custom software development',
+    'Web application development',
+    'API and backend development',
+    'AI integration and automation',
+    'Cloud and DevOps',
+    'Technical consulting',
+  ],
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} bg-nova-darker text-white antialiased`}>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <Navbar />
-        {/* Main content - removed noise-overlay from container to avoid transform issues */}
-        <div className="flex flex-col min-h-screen overflow-x-hidden">
-          <main className="flex-grow relative overflow-x-hidden">
-            <div className="noise-overlay" />
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <main className="relative">{children}</main>
+        <Footer />
       </body>
     </html>
   )

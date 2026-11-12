@@ -1,82 +1,102 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { sms } from '../data/sms'
 import { services } from '../data/services'
+import { sms } from '../data/sms'
 
 const companyLinks = [
-  { label: 'Services', href: '/#services' },
+  { label: 'Engagements', href: '/#engagements' },
   { label: 'Process', href: '/#process' },
+  { label: 'FAQ', href: '/#faq' },
   { label: 'Contact', href: '/#contact' },
 ]
 
 const legalLinks = [
   { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms', href: '/terms' },
+  { label: 'Terms & Conditions', href: '/terms' },
   { label: 'SMS Alerts', href: '/sms-alerts' },
 ]
 
-const linkClass = 'text-gray-400 hover:text-white text-sm transition-colors'
+const linkClass = 'text-sm text-fg-3 transition-colors hover:text-fg'
+const headClass = 'font-mono text-[12px] uppercase tracking-[0.14em] text-fg-2'
 
 export default function Footer() {
   return (
-    <footer className="relative mt-20">
-      <div className="h-px bg-gradient-to-r from-transparent via-nova-gradient-start to-transparent" />
-
-      <div className="bg-nova-dark py-16">
-        <div className="section-padding">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            <div className="lg:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <Image src="/assets/logo.png" alt="Nova 3" width={32} height={32} className="w-8 h-8" />
-                <span className="font-display font-bold text-lg gradient-text">NOVA 3</span>
-              </div>
-              <p className="text-gray-400 text-sm leading-relaxed max-w-md">
-                Software development consulting: web applications, APIs, automation, and technical guidance for
-                startups and small businesses.
-              </p>
-              <a href={`mailto:${sms.supportEmail}`} className={`${linkClass} inline-block mt-4`}>
-                {sms.supportEmail}
-              </a>
-            </div>
-
-            <div>
-              <h3 className="font-display font-semibold text-white mb-4">Services</h3>
-              <ul className="space-y-2">
-                {services.map((s) => (
-                  <li key={s.name}>
-                    <Link href="/#services" className={linkClass}>
-                      {s.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-display font-semibold text-white mb-4">Company</h3>
-              <ul className="space-y-2">
-                {companyLinks.map((link) => (
-                  <li key={link.label}>
-                    <Link href={link.href} className={linkClass}>
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+    <footer className="relative mt-8 overflow-hidden border-t border-white/10">
+      <div className="container-site relative z-10 pb-10 pt-16">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div>
+            <Link href="/" className="inline-flex items-center gap-2.5" aria-label="Nova 3 home">
+              <Image src="/assets/logo.png" alt="" width={32} height={32} className="h-8 w-8" />
+              <span className="text-[17px] font-semibold tracking-[-0.02em]">
+                Nova<span className="text-violet-400"> 3</span>
+              </span>
+            </Link>
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-fg-3">
+              Software development consulting. We design, build, and scale web applications, APIs, and AI-powered
+              products for startups and growing businesses.
+            </p>
+            <a href={`mailto:${sms.supportEmail}`} className="mt-5 inline-block font-mono text-sm text-fg-2 hover:text-violet-300">
+              {sms.supportEmail}
+            </a>
           </div>
 
-          <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-            <p>© {new Date().getFullYear()} Nova 3. All rights reserved.</p>
-            <nav className="flex gap-6" aria-label="Legal">
-              {legalLinks.map((link) => (
-                <Link key={link.label} href={link.href} className="hover:text-white transition-colors">
-                  {link.label}
-                </Link>
+          <nav aria-label="Services">
+            <h3 className={headClass}>Services</h3>
+            <ul className="mt-5 space-y-3">
+              {services.map((s) => (
+                <li key={s.name}>
+                  <Link href="/#services" className={linkClass}>
+                    {s.name}
+                  </Link>
+                </li>
               ))}
-            </nav>
-          </div>
+            </ul>
+          </nav>
+
+          <nav aria-label="Company">
+            <h3 className={headClass}>Company</h3>
+            <ul className="mt-5 space-y-3">
+              {companyLinks.map((l) => (
+                <li key={l.label}>
+                  <Link href={l.href} className={linkClass}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Legal">
+            <h3 className={headClass}>Legal</h3>
+            <ul className="mt-5 space-y-3">
+              {legalLinks.map((l) => (
+                <li key={l.label}>
+                  <Link href={l.href} className={linkClass}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
+
+        <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-8 text-sm text-fg-3 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Nova 3. All rights reserved.</p>
+          <p className="font-mono text-[12px]">Remote · Serving clients worldwide</p>
+        </div>
+      </div>
+
+      {/* oversized wordmark */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none relative -mb-[0.18em] select-none text-center text-[clamp(72px,19vw,300px)] font-semibold leading-[0.8] tracking-[-0.06em] text-transparent"
+        style={{
+          backgroundImage: 'linear-gradient(180deg, rgba(185,140,255,0.28), rgba(185,140,255,0) 80%)',
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+        }}
+      >
+        NOVA 3
       </div>
     </footer>
   )
